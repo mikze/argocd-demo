@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     chart: soneta
-    repoURL: 'https://github.com/soneta/helm-charts' # https://soneta.github.io/helm-charts
+    repoURL: 'https://github.com/soneta/helm-charts/tree/main/charts/soneta' # https://soneta.github.io/helm-charts
     targetRevision: 0.5.0
     helm:
       values: |
