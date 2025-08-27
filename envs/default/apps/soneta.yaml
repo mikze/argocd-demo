@@ -7,10 +7,43 @@ spec:
   project: default
   source:
     chart: soneta
-    repoURL: 'https://github.com/soneta/helm-charts/tree/main/charts/soneta'
+    repoURL: 'https://soneta.github.io/helm-charts'
     targetRevision: main
     helm:
       values: |
+        listaBazDanych: |
+          <DatabaseCollection>
+            <MsSqlDatabase>
+            <Name>bpx</Name>
+            <Description />
+            <Active>true</Active>
+            <DifferentSecondaryDatabase>false</DifferentSecondaryDatabase>
+            <UpdateFeaturesLegacyMode>false</UpdateFeaturesLegacyMode>
+            <OperatorName>?</OperatorName>
+            <WindowsAuthentication>false</WindowsAuthentication>
+            <LicencesSelection>false</LicencesSelection>
+            <IsOptimalization>true</IsOptimalization>
+            <BatchLinks>100</BatchLinks>
+            <BatchFeatures>100</BatchFeatures>
+            <BatchSubTables>40</BatchSubTables>
+            <NonCollectedRows>50000</NonCollectedRows>
+            <LockNotification>false</LockNotification>
+            <Server>51.83.187.245,1433\ENOVA</Server>
+            <DatabaseName>bpx</DatabaseName>
+            <User>sa</User>
+            <Password>=9A721079B885A991E053ABD30242168603</Password>
+            <Trusted>false</Trusted>
+            <SecondaryServer />
+            <SecondaryDatabaseName />
+            <SecondaryUser />
+            <SecondaryTrusted>false</SecondaryTrusted>
+            <VirtualTeleKeySerial>00000000</VirtualTeleKeySerial>
+            <UseConnectionString>false</UseConnectionString>
+            <TrustServerCertificate>true</TrustServerCertificate>
+            <Timeout>15</Timeout>
+            </MsSqlDatabase>
+          </DatabaseCollection>
+
         adminMode: false
         replicaCount: 1
         image:
