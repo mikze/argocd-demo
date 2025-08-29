@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mikze/woocommerce.git  # ← Change to your Git repo
+    path: /  # ← Path to your kustomization files
+    targetRevision: main  # ← Your branch name
+    kustomize:
+      namePrefix: wordpress-
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wordpress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
