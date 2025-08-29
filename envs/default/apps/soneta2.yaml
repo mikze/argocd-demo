@@ -96,7 +96,7 @@ spec:
 
         default-big-component-resources: &default-big-component-resources
           limits:
-            cpu: 1
+            cpu: '1'
             memory: 1Gi
           requests:
             cpu: 250m
