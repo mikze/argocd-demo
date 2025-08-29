@@ -177,3 +177,186 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+
+#--------------------------------------------#
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: soneta2
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/soneta/helm-charts.git
+    path: charts/soneta
+    targetRevision: main  # or your branch/tag
+    helm:
+      values: |
+        listaBazDanych: |
+          <DatabaseCollection>
+            <MsSqlDatabase>
+            <Name>bpx</Name>
+            <Description />
+            <Active>true</Active>
+            <DifferentSecondaryDatabase>false</DifferentSecondaryDatabase>
+            <UpdateFeaturesLegacyMode>false</UpdateFeaturesLegacyMode>
+            <OperatorName>?</OperatorName>
+            <WindowsAuthentication>false</WindowsAuthentication>
+            <LicencesSelection>false</LicencesSelection>
+            <IsOptimalization>true</IsOptimalization>
+            <BatchLinks>100</BatchLinks>
+            <BatchFeatures>100</BatchFeatures>
+            <BatchSubTables>40</BatchSubTables>
+            <NonCollectedRows>50000</NonCollectedRows>
+            <LockNotification>false</LockNotification>
+            <Server>51.83.187.245,1433\ENOVA</Server>
+            <DatabaseName>bpx</DatabaseName>
+            <User>sa</User>
+            <Password>=9A721079B885A991E053ABD30242168603</Password>
+            <Trusted>false</Trusted>
+            <SecondaryServer />
+            <SecondaryDatabaseName />
+            <SecondaryUser />
+            <SecondaryTrusted>false</SecondaryTrusted>
+            <VirtualTeleKeySerial>00000000</VirtualTeleKeySerial>
+            <UseConnectionString>false</UseConnectionString>
+            <TrustServerCertificate>true</TrustServerCertificate>
+            <Timeout>15</Timeout>
+            </MsSqlDatabase>
+          </DatabaseCollection>
+
+        adminMode: false
+        replicaCount: 1
+        image:
+          product: "standard"
+          tag: "2506.1.1"
+          webTagPostfix: -alpine
+          serverTagPostfix: -alpine
+          repository: ""
+          scheduler: false
+          webapi: false
+          webwcf: false
+
+        imagePullSecrets: []
+        nameOverride: ""
+        fullnameOverride: ""
+
+        service:
+          type: NodePort
+          server:
+            type: ClusterIP
+
+        appsettings: 
+          CommHub:
+            GarnetServer:
+              MemorySize: "16m"
+              IndexSize: "16m"
+              PageSize: "4m"
+          HealthCheck:
+            Enabled: true
+
+        ingress:
+          enabled: true
+          # releaseAutoAnnotation: 
+          #   key: nginx.ingress.kubernetes.io/session-cookie-name
+          #   prefix: ""
+          #   postfix: "-INGRESSCOOKIE"
+          # annotations:
+          #   nginx.ingress.kubernetes.io/affinity: cookie 
+          class: nginx
+          host: helloworld-v2.example.com
+          # tlsSecretName: soneta-ingress-tls
+
+        default-small-component-resources: &default-small-component-resources
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+
+        default-big-component-resources: &default-big-component-resources
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 384Mi
+
+        resources:
+          pvc:
+            spec:
+              accessModes:
+                - ReadWriteMany
+              resources:
+                requests:
+                  storage: 10Mi
+          web:
+            <<: *default-small-component-resources
+          webapi:
+            <<: *default-small-component-resources
+          webwcf:
+            <<: *default-small-component-resources
+          orchestrator:
+            <<: *default-small-component-resources
+          router:
+            <<: *default-small-component-resources
+          commhub:
+            <<: *default-small-component-resources
+          server:
+            <<: *default-big-component-resources
+          scheduler:
+            <<: *default-big-component-resources
+          admin:
+            <<: *default-big-component-resources
+
+        nodeSelector: []
+
+        tolerations: []
+
+        affinity: {}
+
+        volumes:
+          all: []
+          frontend: []
+          web: []
+          webapi: []
+          webwcf: []
+          backend: []
+          server: []
+          scheduler: []
+          admin: []
+
+        envs:
+          all: []
+          frontend: []
+          web: []
+          webapi: []
+          webwcf: []
+          backend: []
+          server: []
+          scheduler: []
+          admin: []
+
+        args:
+          all: []
+          frontend: []
+          web: []
+          webapi: []
+          webwcf: []
+          backend: []
+          server: []
+          scheduler: []
+          admin: []
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: soneta2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
