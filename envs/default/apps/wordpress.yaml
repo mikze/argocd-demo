@@ -9,8 +9,6 @@ spec:
     repoURL: https://github.com/mikze/woocommerce.git  # ← Change to your Git repo
     path: path/wordpress  # ← Path to your kustomization files
     targetRevision: main  # ← Your branch name
-    kustomize:
-      namePrefix: wordpress-
   destination:
     server: https://kubernetes.default.svc
     namespace: wordpress
