@@ -177,6 +177,9 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: soneta2
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
   syncPolicy:
     automated:
       prune: true
