@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: soneta
+  name: soneta2
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/soneta/helm-charts.git
+    repoURL: https://github.com/mikze/helm-charts.git
     path: charts/soneta
-    targetRevision: main  # or your branch/tag
+    targetRevision: main  # or your branch/tag github.com/mikze/helm-charts
     helm:
       values: |
         listaBazDanych: |
@@ -83,7 +83,7 @@ spec:
           # annotations:
           #   nginx.ingress.kubernetes.io/affinity: cookie 
           class: nginx
-          host: helloworld-v1.example.com
+          host: helloworld-v2.example.com
           # tlsSecretName: soneta-ingress-tls
 
         default-small-component-resources: &default-small-component-resources
@@ -142,7 +142,11 @@ spec:
           webapi: []
           webwcf: []
           backend: []
-          server: []
+          server:
+          - name: pv-storage
+            mountPath: /dodatki
+            spec:
+              description: pv-storage
           scheduler: []
           admin: []
 
@@ -167,10 +171,12 @@ spec:
           server: []
           scheduler: []
           admin: []
+        
+        initializationCommand: "curl -L http://51.83.187.245:8088/Samples.dll -o /dodatki/Samples.dll && chmod 644 /dodatki/Samples.dll && curl -L http://51.83.187.245:8088/Soneta.e-Sklepy.dll -o /dodatki/Soneta.e-Sklepy.dll && chmod 644 /dodatki/Soneta.e-Sklepy.dll && curl -L http://51.83.187.245:8088/Soneta.Integrator.dll -o /dodatki/Soneta.Integrator.dll && chmod 644 /dodatki/Soneta.Integrator.dll"
 
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: soneta
+    namespace: soneta2
   syncPolicy:
     automated:
       prune: true
