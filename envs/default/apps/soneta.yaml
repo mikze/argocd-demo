@@ -188,9 +188,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/mikze/helm-charts.git
+    repoURL: https://github.com/soneta/helm-charts.git
     path: charts/soneta
-    targetRevision: main  # or your branch/tag github.com/mikze/helm-charts
+    targetRevision: main  # or your branch/tag
     helm:
       values: |
         listaBazDanych: |
@@ -324,11 +324,7 @@ spec:
           webapi: []
           webwcf: []
           backend: []
-          server:
-          - name: pv-storage
-            mountPath: /dodatki
-            spec:
-              description: pv-storage
+          server: []
           scheduler: []
           admin: []
 
@@ -353,8 +349,6 @@ spec:
           server: []
           scheduler: []
           admin: []
-
-        initializationCommand: "curl -L http://51.83.187.245:8088/Samples.dll -o /dodatki/Samples.dll && chmod 644 /dodatki/Samples.dll && curl -L http://51.83.187.245:8088/Soneta.e-Sklepy.dll -o /dodatki/Soneta.e-Sklepy.dll && chmod 644 /dodatki/Soneta.e-Sklepy.dll && curl -L http://51.83.187.245:8088/Soneta.Integrator.dll -o /dodatki/Soneta.Integrator.dll && chmod 644 /dodatki/Soneta.Integrator.dll"
 
   destination:
     server: 'https://kubernetes.default.svc'
